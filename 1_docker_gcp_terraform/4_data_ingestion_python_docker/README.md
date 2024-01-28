@@ -10,61 +10,7 @@
 
 2. cleanup script to remove unneeded comments 
 
-3. use argparse library to customize postgres credential in python command 
-    
-    ```python
-    import argparse
-    import pandas as pd
-    from sqlalchemy import create_engine
-    from datetime import datetime
-    
-    def main(params):
-        # unpack input variable from argsparse
-        user = params.user
-        pwd = params.password
-        host = params.host
-        port = params.port
-        db_name = params.db_name
-        tbl_name = params.tbl_name
-        url = params.url
-    
-        # fetch data from ny taxi website
-        print(f"fetching jan 2021 nyc taxi data on {datetime.now().strftime('%B %d, %Y %H:%M:%S')}")
-        df = pd.read_parquet(url, engine = "fastparquet")
-    
-        # connecting to postgres
-        print(f"connecting to postgres docker container on {datetime.now().strftime('%B %d, %Y %H:%M:%S')}")
-        engine = create_engine(f'postgresql://{user}:{pwd}@{host}:{port}/{db_name}')
-        conn = engine.connect()
-    
-        # create table with column names in postgres
-        print(f"creating {tbl_name} table in postgres container on {datetime.now().strftime('%B %d, %Y %H:%M:%S')}")
-        df.head(n = 0).to_sql(name = tbl_name, con = conn, if_exists = 'replace', index = False)
-    
-        # push the rest of data into table
-        print(f"populating {tbl_name} table on {datetime.now().strftime('%B %d, %Y %H:%M:%S')}")
-        df.to_sql(name = tbl_name, con = conn, if_exists = 'append', index = False)
-    
-        # close connex
-        print(f"data push complete and closing connection to postgres container on {datetime.now().strftime('%B %d, %Y %H:%M:%S')}")
-        conn.close()
-    
-    if __name__ == '__main__':
-        parser = argparse.ArgumentParser(description='Ingest Jan21 NYC taxi data into postgres')
-    
-        # fetch variables from command line
-        parser.add_argument('--user', help = 'username for postgres')
-        parser.add_argument('--password', help = 'password for postgres')
-        parser.add_argument('--host', help = 'hostname for postgres')
-        parser.add_argument('--port', help = 'port number for postgres')
-        parser.add_argument('--db_name', help = 'db name for postgres')
-        parser.add_argument('--tbl_name', help = 'tbl name for postgres')
-        parser.add_argument('--url', help = 'nyc data url for postgres')
-    
-        args = parser.parse_args()
-    
-        main(args)
-    ```
+3. use argparse library to customize postgres credential in python command: final script is [ingest_data.py](ingest_data.py)
     
 4. initiate docker postgres 
     
@@ -83,7 +29,7 @@
 5. run python script on docker container (couldnt get it to run in global environemnt due to package issue from 2nd video)
     
     ```bash
-    URL="https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2021-01.parquet"
+    URL="https://github.com/DataTalksClub/nyc-tlc-data/releases/download/yellow/yellow_tripdata_2021-01.csv.gz"
     
     python ingest_data.py \
         --user=postgres \
@@ -190,6 +136,10 @@
         ```bash
         ipconfig getifaddr en0
         ```
+
+### Additional Comments
+
+Attempted a couple of different variations of chunk inserting the data, in the end they kept over writting each chunk and the final table was only 100k big, so used the old method of importing all data into python then whole insert. It was the only way to get all 1.3 million records into postgresql. It was still slow and it was slow to query the total row count once all data was in postgresql.
 
 ### Helpful Links
 
