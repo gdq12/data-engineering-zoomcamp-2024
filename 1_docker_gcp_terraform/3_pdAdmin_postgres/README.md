@@ -41,7 +41,7 @@
         -e POSTGRES_USER="postgres" \
         -e POSTGRES_PASSWORD="root" \
         -e POSTGRES_DB="ny_taxi" \
-        -v /Users/gdq/git_repos/data-engineering-zoomcamp-2024/1_docker_gcp_terraform/2_docker_sql/data \
+        -v /Users/gdq/git_repos/data-engineering-zoomcamp-2024/1_docker_gcp_terraform/2_docker_sql/data:/var/lib/postgresql/data \
         -p 5432:5432 \
         --network=pg-network \
         --name pg-database \
