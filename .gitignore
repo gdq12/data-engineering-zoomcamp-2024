@@ -161,3 +161,6 @@ cython_debug/
 
 # postgres metadata
 1_docker_gcp_terraform/2_docker_sql/data
+
+# ignore "fluff" files 
+**.DS_Store

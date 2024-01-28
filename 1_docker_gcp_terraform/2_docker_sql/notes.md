@@ -59,31 +59,82 @@
   ```{bash}
   conda install -c conda-forge pyarrow
   conda install -c conda-forge fastparquet
+  brew install wget
   ```
 
-- python script
+- reading data into python environment
 
   ```{python}
+  # import raw data from taxi&limousine commision (csv format)
+  # csv links found here:https://github.com/DataTalksClub/nyc-tlc-data/releases/tag/yellow
+  with pd.read_csv('https://github.com/DataTalksClub/nyc-tlc-data/releases/download/yellow/yellow_tripdata_2021-01.csv.gz',
+                  iterator = True,
+                  compression={'method': 'gzip', 'compresslevel': 1, 'mtime': 1},
+                  low_memory = False) as reader:
+      for chunk in reader:
+          df = chunk
+  
+  # import raw data from taxi&limousine commision (parquet format)
+  df = pd.read_parquet('https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2021-01.parquet', engine = 'pyarrow')
+  ```
+
+- connecting to DWH from python
+
+  ```{python}
+  # define credential varialbe for connex 
+  user = 'root'
+  pwd = 'root'
+  host = 'localhost'
+  port = '5432'
+  db_name = 'ny_taxi'
+
+  engine = create_engine(f'postgresql://{user}:{pwd}@{host}:{port}/{db_name}')
+  conn = engine.connect()
+  ```
+
+- python script end to end 
+
+  ```{python}
+  # needed libraries 
+  import pandas as pd
+  from sqlalchemy import create_engine
+  from time import time
+
   # reading a csv into chunks
-  df_iter = pd.read_csv('file.csv', iterator = True, chunksize = 100000)
+  df_iter = pd.read_csv('https://github.com/DataTalksClub/nyc-tlc-data/releases/download/yellow/yellow_tripdata_2021-01.csv.gz', 
+                      iterator = True, 
+                      chunksize = 100000,
+                      compression={'method': 'gzip', 'compresslevel': 1, 'mtime': 1},
+                      low_memory = False)
   df = next(df_iter)
+
+  # connect to db
+  user = 'root'
+  pwd = 'root'
+  host = 'localhost'
+  port = '5432'
+  db_name = 'ny_taxi'
+
+  engine = create_engine(f'postgresql://{user}:{pwd}@{host}:{port}/{db_name}')
+  conn = engine.connect()
 
   # pandas to do a create table query based on df
   pd.io.sql.get_schema(df, name = 'tbl_name', con = conn)
 
-  # chunk insert df to postgres
-  from time import time
-
+  # pushing data into chunks in DB
   while True:
   	t1 = time()
   	df = next(df_iter)
+
+    df.tpep_pickup_datetime = pd.to_datetime(df.tpep_pickup_datetime)
+    df.tpep_dropoff_datetime = pd.to_datetime(df.tpep_dropoff_datetime)
 
   	df.to_sql(name = 'tbl_name', con = conn, if_exists = 'append')
   	t2 = time()
 
   	print(f'inserted chunk in {t2 - t1} seconds')
   ```
-# 10 min into video 
+
 
 ### Helpful Links
 
