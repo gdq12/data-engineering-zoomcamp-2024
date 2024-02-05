@@ -25,3 +25,5 @@
 ### Helpful Links
 
 * Lecturers [YT video](https://www.youtube.com/watch?v=18jIzE41fJ4&t=2s)
+
+* Lecturer's [notes](https://github.com/DataTalksClub/data-engineering-zoomcamp/blob/main/01-docker-terraform/1_terraform_gcp/2_gcp_overview.md)
