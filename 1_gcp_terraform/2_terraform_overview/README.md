@@ -29,4 +29,4 @@
 
 * Youtube [video](https://www.youtube.com/watch?v=s2bOYDCKl_M&t=1s)
 
-* Lecturer's [notes](https://github.com/DataTalksClub/data-engineering-zoomcamp/tree/main/01-docker-terraform/1_terraform_gcp)
+* Lecturer's [notes](https://github.com/DataTalksClub/data-engineering-zoomcamp/blob/main/01-docker-terraform/1_terraform_gcp/1_terraform_overview.md)
