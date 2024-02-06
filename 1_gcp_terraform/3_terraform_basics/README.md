@@ -83,7 +83,7 @@
         ```{bash}
         # add this to ~/.bash_profile (using atom)
         export PATH=/Users/gdq/google-cloud-sdk/bin:$PATH
-        # define this variable in terminal, add to ~/.bash-profile too
+        # define this variable in terminal, add to ~/.bash_profile too
         export GOOGLE_APPLICATION_CREDENTIALS=/Users/gdq/Documents/file.json
 
         # verify authentiacation worked
