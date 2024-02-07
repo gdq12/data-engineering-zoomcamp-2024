@@ -72,3 +72,5 @@
 ### Helpful Links
 
 * Youtube [video](https://www.youtube.com/watch?v=AicKRcK3pa4)
+
+* Lecture [slides](https://docs.google.com/presentation/d/1y_5p3sxr6Xh1RqE6N8o2280gUzAdiic2hPhYUUD6l88/edit#slide=id.g262e1cce745_0_184)
