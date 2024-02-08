@@ -2,6 +2,7 @@
 __pycache__/
 *.py[cod]
 *$py.class
+.idea 
 
 # C extensions
 *.so
@@ -49,7 +50,10 @@ coverage.xml
 *.py,cover
 .hypothesis/
 .pytest_cache/
-cover/
+*.cover/
+*.py,cover
+.hypothesis/
+.pytest_cache/
 
 # Translations
 *.mo
@@ -159,16 +163,32 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 
-# postgres metadata
-1_docker_gcp_terraform/2_docker_sql/data
-
 # ignore "fluff" files 
 **.DS_Store
 
+######################################postgres centric#########################################
+# postgres metadata
+1_docker_gcp_terraform/2_docker_sql/data
+
+#######################################terraform###############################################
 # Local .terraform directories
 **/.terraform/*
 **.terraform*
 
-# .tfstate files
+# terraform .tfstate files
 *.tfstate
 *.tfstate.*
+
+############################################ mage ##############################################
+# data files
+**/mage_ai/server/data/files/**
+**/default_repo
+**/instance_metadata.json
+**/.mage_data
+
+# Scratch files (files/directories created by mage tutorial)
+**scratch*
+**/mage_data*
+*secrets*.json
+**magic-zoomcamp
+*.json
