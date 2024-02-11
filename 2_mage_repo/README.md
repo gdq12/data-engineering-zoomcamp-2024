@@ -37,3 +37,5 @@ I. [io_config.yaml](./magic-zoomcamp/io_config.yaml)
     * the advantage of this is that it is wasier to use pipeline blocks across multiple pipeline without having to duplicate code 
 
     * when using blocks from other pipeline for another, can essentially drag and drop the blocks from the file window to the open pipeline window. can use the GUI to then form a sequential link between them, this should be updated in the pipelines `metadata.yaml` file
+
+- triggers can be setup to schedule pipeline executions, have them run parallel or trigger each other etc. at the moment, the UI didnt create a file in the repo once a trigger schedule was created, but there is documentation how these triggers can be setup with code. It can be found [here](https://docs.mage.ai/orchestration/triggers/configure-triggers-in-code)
