@@ -2,7 +2,7 @@
 
 - Git clone the repo to local pc
 
-- Then copy/pasted all non-git files to desired folder to keep all info in this learning repo. will be working in [mage_repo](../mage_repo/)
+- Then copy/pasted all non-git files to desired folder to keep all info in this learning repo. will be working in [mage_repo](../../2_mage_repo/)
 
 - Follow instructions set by repo [README](https://github.com/mage-ai/mage-zoomcamp/blob/master/README.md) 
 
