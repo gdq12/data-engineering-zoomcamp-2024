@@ -32,4 +32,8 @@ I. [io_config.yaml](./magic-zoomcamp/io_config.yaml)
 
     * at the end of this yaml file it states higher level info of the pipeline: variable definition location, when it was created, types etc. 
 
-- the scripts are of the actual pipeline are location in the block subfolders (data_exporters, data_loaders, transformers). These subfolders will prob consists of blocks from multiple pipelines, but the pipeline rganization and to which pipeline they pertain to can also be derived from `pipelines/pipelineName/metadata.yaml`.
+- the scripts are of the actual pipeline are location in the block subfolders (data_exporters, data_loaders, transformers). These subfolders will prob consists of blocks from multiple pipelines, but the pipeline organization and to which pipeline they pertain to can also be derived from `pipelines/pipelineName/metadata.yaml`.
+
+    * the advantage of this is that it is wasier to use pipeline blocks across multiple pipeline without having to duplicate code 
+
+    * when using blocks from other pipeline for another, can essentially drag and drop the blocks from the file window to the open pipeline window. can use the GUI to then form a sequential link between them, this should be updated in the pipelines `metadata.yaml` file
