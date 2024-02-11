@@ -10,6 +10,14 @@ I. [io_config.yaml](./magic-zoomcamp/io_config.yaml)
 
 * when initiating the docker image, the credentials definitions that are saved in the `.env` file are captured (interpolating) into this file via jinja syntax: `{{ env_var('var_name') }}`
 
+* credential to connect to cloud services are also defined here. Once they have been created and downloaded locally to the target location. The following can be done: 
+
+    - add a copy command to `Dockerfile` so it can be copied into a mage container once its up and running: `COPY *secrets*.json ${USER_CODE_PATH}/*secrets*.json` (perhaps this is over kill, just having it mounted to the image upon docker run/compose should be sufficient)
+
+    - have it mounted to the target directory in the container via `docker-compose.yml`: `./*secrets*.json:/home/src/` 
+
+    - update `io_config.yaml` so that instead of defining all of the json vars individually, it can be just read straight from the json file via env var `GOOGLE_SERVICE_ACC_KEY_FILEPATH`. Also verify that `GOOGLE_LOCATION` has the correct region. 
+
 ### Pipeline Setup 
 
 - the setup info and files executed when a pipeline is triggered reside in different folders in the project directory 
