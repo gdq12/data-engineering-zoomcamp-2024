@@ -24,4 +24,4 @@ I. [io_config.yaml](./magic-zoomcamp/io_config.yaml)
 
     * at the end of this yaml file it states higher level info of the pipeline: variable definition location, when it was created, types etc. 
 
-_ the scripts are of the actual pipeline are location in the block subfolders (data_exporters, data_loaders, transformers). These subfolders will prob consists of blocks from multiple pipelines, but the pipeline rganization and to which pipeline they pertain to can also be derived from `pipelines/pipelineName/metadata.yaml`.
+- the scripts are of the actual pipeline are location in the block subfolders (data_exporters, data_loaders, transformers). These subfolders will prob consists of blocks from multiple pipelines, but the pipeline rganization and to which pipeline they pertain to can also be derived from `pipelines/pipelineName/metadata.yaml`.
