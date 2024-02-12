@@ -49,3 +49,15 @@ I. [io_config.yaml](./magic-zoomcamp/io_config.yaml)
 - custom variable definition are saved in the pipelines `metadata.yaml` file. To customize them via code instead of the GUI, best to follow this [documentation](https://docs.mage.ai/getting-started/runtime-variable#using-runtime-variables)
 
 - further documentation: [runtime variables](https://docs.mage.ai/getting-started/runtime-variable) and [variables in Mage](https://docs.mage.ai/development/variables/overview)
+
+### Backfills
+
+- its like going back in time and collecting possible missing data 
+
+- if data collection is based on an execution date, then its like creating a for loop to fetch info from that execution date 
+
+- caution this is dependent on the pipeline using `kwargs['execution_date']` in the pipeline scripts 
+
+- this can be set up in the UI, as explained [here](https://docs.mage.ai/orchestration/backfills/guides)
+
+- it seems that no code files are created for this, but apart from using the UI, one can make API calls to execute this. documentation on this is found [here](https://docs.mage.ai/api-reference/backfills/overview)
