@@ -39,3 +39,13 @@ I. [io_config.yaml](./magic-zoomcamp/io_config.yaml)
     * when using blocks from other pipeline for another, can essentially drag and drop the blocks from the file window to the open pipeline window. can use the GUI to then form a sequential link between them, this should be updated in the pipelines `metadata.yaml` file
 
 - triggers can be setup to schedule pipeline executions, have them run parallel or trigger each other etc. at the moment, the UI didnt create a file in the repo once a trigger schedule was created, but there is documentation how these triggers can be setup with code. It can be found [here](https://docs.mage.ai/orchestration/triggers/configure-triggers-in-code)
+
+### Variable setups 
+
+- defualt variables can be accessed in a pipeline script via `kwargs`. The set default can either be viewed by executing `print(kwargs)` or looking at the listed one in the documentation [here](https://docs.mage.ai/getting-started/runtime-variable#using-runtime-variables)
+
+- new variables can be created for pipelines and triggers in the GUI in respective pipelines by going to the `variables`/`Runtime variables` option in the left panel 
+
+- custom variable definition are saved in the pipelines `metadata.yaml` file. To customize them via code instead of the GUI, best to follow this [documentation](https://docs.mage.ai/getting-started/runtime-variable#using-runtime-variables)
+
+- further documentation: [runtime variables](https://docs.mage.ai/getting-started/runtime-variable) and [variables in Mage](https://docs.mage.ai/development/variables/overview)

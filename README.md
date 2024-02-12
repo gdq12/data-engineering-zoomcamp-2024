@@ -11,4 +11,4 @@ This course was run on a MacBook Pro 13-inch 2020, 2 GHz Quad-Core Intel Core i5
 * FAQ [doc](https://docs.google.com/document/d/19bnYs80DwuUimHM65UV3sylsCn2j1vziPOwzBwQrebw/edit)
 * comprehensive format to follow each of the lessons per week can be viewed in this [streamlit app](https://dezoomcamp.streamlit.app/Module%201%20Introduction%20&%20Prerequisites)
 * notes/videos/helpful guides are currently offered in each of the respective lesson sub repos. They will be integrated in the notes here when necessary.
-* deadlines for each section can be found [here](https://docs.google.com/spreadsheets/d/e/2PACX-1vQACMLuutV5rvXg5qICuJGL-yZqIV0FBD84CxPdC5eZHf8TfzB-CJT_3Mo7U7oGVTXmSihPgQxuuoku/pubhtml). deadlines followed depending on availability of personal time. 
+* deadlines for each section can be found [here](https://docs.google.com/spreadsheets/d/e/2PACX-1vQACMLuutV5rvXg5qICuJGL-yZqIV0FBD84CxPdC5eZHf8TfzB-CJT_3Mo7U7oGVTXmSihPgQxuuoku/pubhtml). deadlines followed depending on availability. 
