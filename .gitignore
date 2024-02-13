@@ -180,15 +180,24 @@ cython_debug/
 *.tfstate.*
 
 ############################################ mage ##############################################
-# data files
-**/mage_ai/server/data/files/**
-**/default_repo
-**/instance_metadata.json
-**/.mage_data
+# # data files
+# **/mage_ai/server/data/files/**
+# **/default_repo
+# **/instance_metadata.json
+# **/.mage_data
 
-# Scratch files (files/directories created by mage tutorial)
-**scratch*
-**/mage_data*
-*secrets*.json
-**magic-zoomcamp
-*.json
+# # Scratch files (files/directories created by mage tutorial)
+# **scratch*
+# **/mage_data*
+# *secrets*.json
+# **magic-zoomcamp
+# *.json
+
+# keep tutorial info local only
+week2/2_mage_repo/mage_data*
+week2/2_mage_repo/magic-zoomcamp*
+**ny-taxi-412905-ac957361bbc4.json**
+
+# hw2
+**io_config.yaml**
+**.parquet**
