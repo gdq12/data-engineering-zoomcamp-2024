@@ -1,0 +1,2 @@
+# map repo content to container
+export DE_GIT_REPO="/Users/gdq/git_repos/data-engineering-zoomcamp-2024/workshops/DLT/material_from_repo"
