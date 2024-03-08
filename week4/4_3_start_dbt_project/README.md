@@ -91,7 +91,19 @@
 
 1. create new branch: `dbt-cloud-wk4-lesson3`
 
-2. 
+2. in the left panel click on `initialize dbt project`. It will create a sereies of folders and file in the principle file path of the repo but this can be moved after the pull request 
+    
+    - adds the following to `.gitignore`: `target/`, `dbt_packages/`, `logs/`
+
+    - adds the following folders: `tests`, `analyses`, `models`, `macros`, `seeds`, `snapshots`
+
+    - add the following file: `dbt_profile.yml`
+
+3. good to know for the `dbt_profile.yml`
+
+    - its a file that defines a project and paths where most needed config files are to be found 
+
+    - can determine things like what profile dbt should run under, what type od table models dbt should be creating etc
 
 ### Helpful Links
 
