@@ -30,9 +30,9 @@
 
 1. create a free develope dbt cloud account, based on instructions found [here](https://www.getdbt.com/signup)
 
-2. Connect Bigquery to dbt Cloud. dbt offers [documentation](https://docs.getdbt.com/guides/bigquery?step=1) but there is also a course [README](https://github.com/DataTalksClub/data-engineering-zoomcamp/blob/main/04-analytics-engineering/dbt_cloud_setup.md)
+    * an account will be created based on what organization is stated during the registration 
 
-3. create a service account in Bigquery 
+2. create a service account in Bigquery 
 
     - go to Bigquery [credential wizerd]
 (https://console.cloud.google.com/apis/credentials/wizard?project=ny-taxi-412905)
@@ -57,17 +57,21 @@
 
         * json will be auto-downloaded to PC
 
-4. create a new project in dbt Cloud [here](https://cloud.getdbt.com/)
+4. create a new project in dbt Cloud [here](https://cloud.getdbt.com/) 
 
-    * either have to create a new project or will be on a page where asked to complete project setup
+    * top right corner go to settings next to account name 
 
-    * name project `de-zoomcamp-wk3`
+        * click projects in the left panel 
+
+        * click on `+ New Project`
+
+    * name project `4_3_start_w_dbt`
 
     * choose connection: `BigQuery`
 
-    * upload service account json file produced in step 3
+    * upload service account json file produced from step2
 
-    * accept all --> verify dataset name is `nytaxi_wk3_dbt`
+    * dataset/schema name dbt will set up during trasnformations: `transform_wk4_v1`
 
     * `test connection`
 
@@ -77,38 +81,33 @@
 
     * copy the key string and paste it in: github repo setting --> deploy keys --> `add new` --> `allow write access` --> `add key`
 
-6. install dbt Cloud CLI, based on these [instructions](https://cloud.getdbt.com/settings/profile/cloud-cli), this step didnt work, will try to fix it later 
+6. `Start developing in the IDE`: click on this option when the "Your project is ready window appears"
 
-    * installing commands 
-    
-        ```{bash}
-        # using brew (for global installation)
-        brew untap dbt-labs/dbt 
-        brew tap dbt-labs/dbt-cli 
-        brew install dbt
+    - this step clones the repo to the remote IDE
 
-        # using python (should do within a docker)
-        pip3 install dbt --no-cache-dir
-        ```
+    - offers to provide a brief tour, best to do to more easily navigate throughout the rest of the tutorial 
 
-    * add configuration file to PC 
+### Setting up project in dbt Cloud (all carried out in dbt CLoud IDE)
 
-        ```{bash}
-        mkdir ~/.dbt
-        mv ~/Downloads/dbt_cloud.yml ~/.dbt/.
-        ```
+1. create new branch: `dbt-cloud-wk4-lesson3`
 
+2. 
 
 ### Helpful Links
 
 * Lecture [slides](https://docs.google.com/presentation/d/1xSll_jv0T8JF4rYZvLHfkJXYqUjPtThA/edit#slide=id.p1)
 
-* Github [page](https://github.com/DataTalksClub/nyc-tlc-data/) for data needed for dbt project 
+* Lesson YT [video](https://www.youtube.com/watch?v=iMxh6s_wL4Q&t=1s)
 
-* Github [dbt-cloud setup](https://github.com/DataTalksClub/data-engineering-zoomcamp/blob/main/04-analytics-engineering/dbt_cloud_setup.md)
-
-* Github [dbt-core with BigQuery setup](https://github.com/DataTalksClub/data-engineering-zoomcamp/blob/main/04-analytics-engineering/docker_setup/README.md)
+* week4 [repo page](https://github.com/DataTalksClub/data-engineering-zoomcamp/tree/main/04-analytics-engineering)
 
 * dbt [documnetation page](https://docs.getdbt.com/docs/introduction)
 
-* Lesson YT [video](https://www.youtube.com/watch?v=iMxh6s_wL4Q&t=1s)
+* Links for helping set up DBT:
+
+    - Github [page](https://github.com/DataTalksClub/data-engineering-zoomcamp/blob/main/04-analytics-engineering/dbt_cloud_setup.md) to set up dbt Cloud with Bigquery 
+
+    - Github [dbt-core with BigQuery setup](https://github.com/DataTalksClub/data-engineering-zoomcamp/blob/main/04-analytics-engineering/docker_setup/README.md) (if not interested in using dbt Cloud)
+
+
+
