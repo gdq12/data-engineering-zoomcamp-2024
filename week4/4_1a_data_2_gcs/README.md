@@ -19,7 +19,7 @@
 
     * note: this methid used pandas to pull the data into python to then fix the column names prior to pushing to GCS, but for the future a more optimal way would be to dowlnload the data into the local environment of the docker container so there is less memory consumption.
 
-4. execute queries in [gcs_2_bigquery.sql](gcs_2_bigquery.sql) to create external table in Bigquery dataset `ny-taxi-412905.nytaxi_wk3_dbt`
+4. execute queries in [gcs_2_bigquery.sql](gcs_2_bigquery.sql) to create external table in Bigquery dataset `ny-taxi-412905.nytaxi_wk4_dbt`
 
 ### Helpful links
 
