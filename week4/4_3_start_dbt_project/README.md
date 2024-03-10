@@ -1,30 +1,52 @@
 ### Starting a dbt project 
 
-1. Create something that resembles a repository where the project will be stored 
+1. In Bigquery, create the needed schemas and copy over the raw data from gcs. This is done using [gcs_2_bigquery.sql](../4_1a_data_2_gcs/gcs_2_bigquery.sql). This creates the following:
 
-    - can opt to use dbt's starter project [repo](https://github.com/dbt-labs/dbt-starter-project)
+    - dataset/datawarehouse: `ny-taxi-412905`
 
-        * provides folders/files needed including sample models 
+    - schemas: 
+    
+        + `nytaxi_wk4_dbt_raw`
 
-    - important files needed: 
+            - tbls: 
 
-        - `profile.yml`: define global settings for the project, profile (which DB wil be using to run project)
+                + `external_green_trip_data`
 
-2. getting the starter project started 
+                + `external_yellow_trip_data`
 
-    - can be done locally by running `dbt init` in the directory when want to host the project 
+                + `external_fhv_trip_data`
 
-    - via dbt cloud (more UI based)
+        + `nytaxi_wk4_dbt_transform`
 
-3. set up schemas/tables in big query 
+        + `nytaxi_wk4_dbt_prod`
 
-    - there should be types 3 schema: raw, transform, production
+2. other (not sure where this goes)
 
-    - dbt expects for the raw data to already be placed in the raw centric schema 
+    a. Create something that resembles a repository where the project will be stored 
 
-    - dbts main work is in the transformation schema 
+        - can opt to use dbt's starter project [repo](https://github.com/dbt-labs/dbt-starter-project)
 
-    - dbt aim to have production ready tables in the production schema 
+            * provides folders/files needed including sample models 
+
+        - important files needed: 
+
+            - `profile.yml`: define global settings for the project, profile (which DB wil be using to run project)
+
+    b. getting the starter project started 
+
+        - can be done locally by running `dbt init` in the directory when want to host the project 
+
+        - via dbt cloud (more UI based)
+
+    c. set up schemas/tables in big query 
+
+        - there should be types 3 schema: raw, transform, production
+
+        - dbt expects for the raw data to already be placed in the raw centric schema 
+
+        - dbts main work is in the transformation schema 
+
+        - dbt aim to have production ready tables in the production schema 
 
 ### Setting up dbt with Bigquery 
 
@@ -67,11 +89,17 @@
 
     * name project `4_3_start_w_dbt`
 
+        * define a subdirectory so file system only created in a specific part of the repo: `data-engineering-zoomcamp-2024/week4/4_3_start_dbt_project`
+
     * choose connection: `BigQuery`
 
     * upload service account json file produced from step2
 
-    * dataset/schema name dbt will set up during trasnformations: `transform_wk4_v1`
+        - specify location so queries run only under a specific location: `europe-west1`
+
+    * dataset/schema name dbt will set up during trasnformations: `nytaxi_wk4_dbt_transform`
+
+        - this schema should be created in Bigquery before starting to model in dbt (this was already created in Bigquery)
 
     * `test connection`
 
@@ -99,11 +127,15 @@
 
     - add the following file: `dbt_profile.yml`
 
+    - all of these files/folders can be drag and dropped to te desired sub repo in dbt Cloud UI
+
 3. good to know for the `dbt_profile.yml`
 
     - its a file that defines a project and paths where most needed config files are to be found 
 
     - can determine things like what profile dbt should run under, what type od table models dbt should be creating etc
+
+    - changed project name to `taxi_rides_ny` (lines 5 and 39)
 
 ### Helpful Links
 
