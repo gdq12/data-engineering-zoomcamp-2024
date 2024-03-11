@@ -1,0 +1,10 @@
+version: 2
+
+sources:
+  - name: staging
+    database: ny-taxi-412905
+    schema: nytaxi_wk4_dbt_raw
+
+    tables: 
+      - name: green_trip_data
+      - name: yellow_trip_data

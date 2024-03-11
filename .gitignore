@@ -204,3 +204,10 @@ week2/2_mage_repo/magic-zoomcamp*
 
 # kep all env files local 
 **.envc
+
+# week4 dbt 
+# you shouldn't commit these into source control
+# these are the default directory names, adjust/add to fit your needs
+# target/
+# dbt_packages/
+# logs/
