@@ -273,10 +273,10 @@
 
   + it builds ALL models, tables, views, seeds etc
 
-  + `--select +<model_name>`: the `+` sign tell dbt to also compile the the models that the target model name are dependent on. placing the `+` after the model name tells dbt to also run the models that are dependent on the target model name 
+  + `--select +<model_name>`: the `+` sign tell dbt to also compile the the models that the target model name are dependent on. placing the `+` after the model name tells dbt to also run the models that are dependent on the target model name
 
 ### Helpful Links
 
-* YT [lecture](https://www.youtube.com/watch?v=UVI30Vxzd6c&t=3s)
+* YT [lecture](https://www.youtube.com/watch?v=ueVy2N54lyc&list=PLaNLNpjZpzwgneiI-Gl8df8GCsPYp_6Bs&index=4)
 
 * Lecture [slides](https://docs.google.com/presentation/d/1xSll_jv0T8JF4rYZvLHfkJXYqUjPtThA/edit#slide=id.p1)
