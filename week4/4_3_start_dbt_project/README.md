@@ -89,7 +89,7 @@
 
     * name project `4_3_start_w_dbt`
 
-        * define a subdirectory so file system only created in a specific part of the repo: `data-engineering-zoomcamp-2024/week4/4_3_start_dbt_project`
+        * define a subdirectory so file system only created in a specific part of the repo: `4_3_dbt_cloud`
 
     * choose connection: `BigQuery`
 
