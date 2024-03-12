@@ -96,6 +96,12 @@
 
   - in dbt Cloud it can be visited by clicking on the small open book icon at the top right corner of the left hand panel (next to the github branch name).
 
+### Observations
+
+* in Bigquery there were 3 datasets/databases created: raw, transform, prod
+
+* all products of `dbt run` were stored in the database trasform. Shouldn't of there been a way to have the `models/core` tbls generated in the prod database?
+
 
 ### Helpful Links
 
