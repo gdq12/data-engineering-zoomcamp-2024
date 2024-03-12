@@ -40,7 +40,7 @@
 
   - set deployment type: PROD
 
-  - Dataset: prod
+  - Dataset: nytaxi_wk4_dbt_prod (name of schema where `models/core` should be created/updated)
 
   - everything else default
 
@@ -119,6 +119,13 @@
   - compare changes against an environment (deferral): Production
 
 - with the previous bull points set up, a run will be auto triggers when the dev branch is merged to main --> triggering github CI/CD mechanism
+
+### Observations
+
+* based on the current settings from this week's lessons, it appears that dev views/tables are created in `ny-taxi-412905.nytaxi_wk4_dbt_transform` and the deployed ones are in `ny-taxi-412905.nytaxi_wk4_dbt_prod`
+
+* it would be ideal if the model produced in `models/stage` and created in `ny-taxi-412905.nytaxi_wk4_dbt_transform` and those in `models/core` be created in `ny-taxi-412905.nytaxi_wk4_dbt_prod`
+
 
 ### Helpful Links
 
