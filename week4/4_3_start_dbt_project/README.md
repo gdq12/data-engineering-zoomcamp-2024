@@ -1,14 +1,14 @@
-### Starting a dbt project 
+### Starting a dbt project
 
 1. In Bigquery, create the needed schemas and copy over the raw data from gcs. This is done using [gcs_2_bigquery.sql](../4_1a_data_2_gcs/gcs_2_bigquery.sql). This creates the following:
 
     - dataset/datawarehouse: `ny-taxi-412905`
 
-    - schemas: 
-    
+    - schemas:
+
         + `nytaxi_wk4_dbt_raw`
 
-            - tbls: 
+            - tbls:
 
                 + `external_green_trip_data`
 
@@ -22,39 +22,39 @@
 
 2. other (not sure where this goes)
 
-    a. Create something that resembles a repository where the project will be stored 
+    a. Create something that resembles a repository where the project will be stored
 
         - can opt to use dbt's starter project [repo](https://github.com/dbt-labs/dbt-starter-project)
 
-            * provides folders/files needed including sample models 
+            * provides folders/files needed including sample models
 
-        - important files needed: 
+        - important files needed:
 
             - `profile.yml`: define global settings for the project, profile (which DB wil be using to run project)
 
-    b. getting the starter project started 
+    b. getting the starter project started
 
-        - can be done locally by running `dbt init` in the directory when want to host the project 
+        - can be done locally by running `dbt init` in the directory when want to host the project
 
         - via dbt cloud (more UI based)
 
-    c. set up schemas/tables in big query 
+    c. set up schemas/tables in big query
 
         - there should be types 3 schema: raw, transform, production
 
-        - dbt expects for the raw data to already be placed in the raw centric schema 
+        - dbt expects for the raw data to already be placed in the raw centric schema
 
-        - dbts main work is in the transformation schema 
+        - dbts main work is in the transformation schema
 
-        - dbt aim to have production ready tables in the production schema 
+        - dbt aim to have production ready tables in the production schema
 
-### Setting up dbt with Bigquery 
+### Setting up dbt with Bigquery
 
 1. create a free develope dbt cloud account, based on instructions found [here](https://www.getdbt.com/signup)
 
-    * an account will be created based on what organization is stated during the registration 
+    * an account will be created based on what organization is stated during the registration
 
-2. create a service account in Bigquery 
+2. create a service account in Bigquery
 
     - go to Bigquery [credential wizerd]
 (https://console.cloud.google.com/apis/credentials/wizard?project=ny-taxi-412905)
@@ -71,25 +71,25 @@
 
         * role: `BigQuery Admin`
 
-        * in the credential page --> click on service account that just created 
+        * in the credential page --> click on service account that just created
 
-        * select keys tab 
+        * select keys tab
 
         * `add key` --> `create new key` --> `json` format
 
         * json will be auto-downloaded to PC
 
-4. create a new project in dbt Cloud [here](https://cloud.getdbt.com/) 
+4. create a new project in dbt Cloud [here](https://cloud.getdbt.com/)
 
-    * top right corner go to settings next to account name 
+    * top right corner go to settings next to account name
 
-        * click projects in the left panel 
+        * click projects in the left panel
 
         * click on `+ New Project`
 
     * name project `4_3_start_w_dbt`
 
-        * define a subdirectory so file system only created in a specific part of the repo: `data-engineering-zoomcamp-2024/week4/4_3_start_dbt_project`
+        * define a subdirectory so file system only created in a specific part of the repo: `4_3_dbt_cloud`
 
     * choose connection: `BigQuery`
 
@@ -103,7 +103,7 @@
 
     * `test connection`
 
-5. add git repo to project 
+5. add git repo to project
 
     * in the settings to setup repo for project --> select git clone and paste repo SSH into the box
 
@@ -113,14 +113,14 @@
 
     - this step clones the repo to the remote IDE
 
-    - offers to provide a brief tour, best to do to more easily navigate throughout the rest of the tutorial 
+    - offers to provide a brief tour, best to do to more easily navigate throughout the rest of the tutorial
 
 ### Setting up project in dbt Cloud (all carried out in dbt CLoud IDE)
 
 1. create new branch: `dbt-cloud-wk4-lesson3`
 
-2. in the left panel click on `initialize dbt project`. It will create a sereies of folders and file in the principle file path of the repo but this can be moved after the pull request 
-    
+2. in the left panel click on `initialize dbt project`. It will create a sereies of folders and file in the principle file path of the repo but this can be moved after the pull request
+
     - adds the following to `.gitignore`: `target/`, `dbt_packages/`, `logs/`
 
     - adds the following folders: `tests`, `analyses`, `models`, `macros`, `seeds`, `snapshots`
@@ -131,7 +131,7 @@
 
 3. good to know for the `dbt_profile.yml`
 
-    - its a file that defines a project and paths where most needed config files are to be found 
+    - its a file that defines a project and paths where most needed config files are to be found
 
     - can determine things like what profile dbt should run under, what type od table models dbt should be creating etc
 
@@ -141,7 +141,7 @@
 
 * Lecture [slides](https://docs.google.com/presentation/d/1xSll_jv0T8JF4rYZvLHfkJXYqUjPtThA/edit#slide=id.p1)
 
-* Lesson YT [video](https://www.youtube.com/watch?v=iMxh6s_wL4Q&t=1s)
+* Lesson YT [video](https://www.youtube.com/watch?v=J0XCDyKiU64&list=PLaNLNpjZpzwgneiI-Gl8df8GCsPYp_6Bs&index=5)
 
 * week4 [repo page](https://github.com/DataTalksClub/data-engineering-zoomcamp/tree/main/04-analytics-engineering)
 
@@ -149,9 +149,6 @@
 
 * Links for helping set up DBT:
 
-    - Github [page](https://github.com/DataTalksClub/data-engineering-zoomcamp/blob/main/04-analytics-engineering/dbt_cloud_setup.md) to set up dbt Cloud with Bigquery 
+    - Github [page](https://github.com/DataTalksClub/data-engineering-zoomcamp/blob/main/04-analytics-engineering/dbt_cloud_setup.md) to set up dbt Cloud with Bigquery
 
     - Github [dbt-core with BigQuery setup](https://github.com/DataTalksClub/data-engineering-zoomcamp/blob/main/04-analytics-engineering/docker_setup/README.md) (if not interested in using dbt Cloud)
-
-
-

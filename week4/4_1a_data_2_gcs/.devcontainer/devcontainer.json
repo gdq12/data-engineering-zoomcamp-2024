@@ -13,12 +13,17 @@
 
 	// mounting files
 	"mounts": [
-		"source=${localEnv:DE_GIT_REPO},target=/workspaces/data-engineering-zoomcamp-2024/week4/4_1a_data_2_gcs/scripts,type=bind,consistency=cached"
+		// "source=${localEnv:DE_GIT_REPO},target=/workspaces/data-engineering-zoomcamp-2024/week4/4_1a_data_2_gcs/scripts,type=bind,consistency=cached"
 	],
 
 	// Features to add to the dev container. More info: https://containers.dev/features.
 	// "features": {},
 
+	// Use 'forwardPorts' to make a list of ports inside the container available locally.
+	"forwardPorts": [
+		8501,
+		8501
+	],
 	"customizations": {
 		"vscode": {
 			"extensions": [
