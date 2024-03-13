@@ -147,6 +147,8 @@
 
 * dbt [documnetation page](https://docs.getdbt.com/docs/introduction)
 
+* Good overview of the what the project will look like can be found [here](https://github.com/DataTalksClub/data-engineering-zoomcamp/blob/main/04-analytics-engineering/taxi_rides_ny/README.md)
+
 * Links for helping set up DBT:
 
     - Github [page](https://github.com/DataTalksClub/data-engineering-zoomcamp/blob/main/04-analytics-engineering/dbt_cloud_setup.md) to set up dbt Cloud with Bigquery
