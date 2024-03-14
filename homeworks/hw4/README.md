@@ -1,4 +1,7 @@
-### Imporing data to GCS and Bigquery
+### Imporing data to GCS and
+
+**material for this is stored in [load_2_bigquery](load_2_bigquery)**
+
 1. build the docker image
 
     ```{bash}
@@ -36,9 +39,35 @@
 
 3. run [url_2_gcs.py](url_2_gcs.py) to transfer the data from the url links to GCS bucket.
 
-  * note: each while loop run some how closes the gcs connex for further data loading. For each dataset transfer (`green`, `yellow`, `fhv`), the kernel was reinitiated in jupyter notebook and code prior to the first while loop was recreated prior to continuing to execute the consecutive while loop not yet executed. 
+  * note: each while loop run some how closes the gcs connex for further data loading. For each dataset transfer (`green`, `yellow`, `fhv`), the kernel was reinitiated in jupyter notebook and code prior to the first while loop was recreated prior to continuing to execute the consecutive while loop not yet executed.
 
 4. execute queries in [gcs_2_bigquery.sql](gcs_2_bigquery.sql) to tables in `ny-taxi-412905.ny_taxi_hw4_dbt_raw`
+
+### dbt Setup good to knows
+
+* in dbt Cloud project named `week4-hw4`
+
+* dev branch: `dbt-hw4-dev`
+
+* Bigquery objects created for use:
+
+  - schemas:
+
+    + `ny-taxi-412905.ny_taxi_hw4_dbt_raw`
+
+    + `ny-taxi-412905.ny_taxi_hw4_dbt_transform`
+
+    + `ny-taxi-412905.ny_taxi_hw4_dbt_prod`
+
+  - tables:
+
+    + `ny-taxi-412905.ny_taxi_hw4_dbt_raw.green_trip_data`
+
+    + `ny-taxi-412905.ny_taxi_hw4_dbt_raw.yellow_trip_data`
+
+    + `ny-taxi-412905.ny_taxi_hw4_dbt_raw.fhv_trip_data`
+
+
 
 ### Helpful Links
 

@@ -34,6 +34,13 @@ uris = ['gs://ny_taxi_hw4_dbt/fhv_taxi_data/*']
 )
 ;
 
+create or replace external table ny-taxi-412905.ny_taxi_hw4_dbt_raw.external_fhvhv_trip_data
+options (
+format = 'PARQUET',
+uris = ['gs://ny_taxi_hw4_dbt/fhvhv_taxi_data/*']
+)
+;
+
 -- 3. create regular tables to work with in dbt
 create or replace table ny-taxi-412905.ny_taxi_hw4_dbt_raw.green_trip_data as
 select * from ny-taxi-412905.ny_taxi_hw4_dbt_raw.external_green_trip_data
@@ -45,4 +52,8 @@ select * from ny-taxi-412905.ny_taxi_hw4_dbt_raw.external_yellow_trip_data
 
 create or replace table ny-taxi-412905.ny_taxi_hw4_dbt_raw.fhv_trip_data as
 select * from ny-taxi-412905.ny_taxi_hw4_dbt_raw.external_fhv_trip_data
+;
+
+create or replace table ny-taxi-412905.ny_taxi_hw4_dbt_raw.fhvhv_trip_data as
+select * from ny-taxi-412905.ny_taxi_hw4_dbt_raw.external_fhvhv_trip_data
 ;
