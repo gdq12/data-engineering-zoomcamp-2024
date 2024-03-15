@@ -52,7 +52,7 @@ select
 vendor_id
 , PARSE_TIMESTAMP('%Y-%m-%d %H:%M:%S', cast(lpep_pickup_datetime as string)) lpep_pickup_datetime
 , PARSE_TIMESTAMP('%Y-%m-%d %H:%M:%S', cast(lpep_dropoff_datetime as string)) lpep_dropoff_datetime
-, PARSE_TIMESTAMP('%Y-%m-%d %H:%M:%S', cast(load_dt as string)) lload_dt
+, PARSE_TIMESTAMP('%Y-%m-%d %H:%M:%S', cast(load_dt as string)) load_dt
 , store_and_fwd_flag, ratecode_id, pu_location_id, do_location_id, passenger_count, trip_distance, fare_amount
 , extra, mta_tax, tip_amount, tolls_amount, ehail_fee, improvement_surcharge, total_amount, payment_type, trip_type
 , congestion_surcharge
@@ -67,7 +67,7 @@ select
 vendor_id, ratecode_id, pu_location_id, do_location_id
 , PARSE_TIMESTAMP('%Y-%m-%d %H:%M:%S', cast(tpep_pickup_datetime as string)) tpep_pickup_datetime
 , PARSE_TIMESTAMP('%Y-%m-%d %H:%M:%S', cast(tpep_dropoff_datetime as string)) tpep_dropoff_datetime
-, PARSE_TIMESTAMP('%Y-%m-%d %H:%M:%S', cast(load_dt as string)) lload_dt
+, PARSE_TIMESTAMP('%Y-%m-%d %H:%M:%S', cast(load_dt as string)) load_dt
 , store_and_fwd_flag, passenger_count, trip_distance
 , fare_amount, extra, mta_tax, tip_amount, tolls_amount
 , improvement_surcharge, total_amount, payment_type
