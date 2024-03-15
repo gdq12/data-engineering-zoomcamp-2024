@@ -11,7 +11,7 @@ select
     t1.access_a_ride_flag, 
     t1.wav_request_flag, 
     t1.wav_match_flag, 
-    t1.sr_flag,
+    -- t1.sr_flag,
     t1.trip_type,
     {{ get_trip_type_description("t1.ratecodeid") }} as trip_type_name,
     t1.payment_type,

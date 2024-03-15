@@ -27,10 +27,3 @@ select
     trim(wav_match_flag) as wav_match_flag, 
     cast(load_dt as timestamp) as load_dt
 from {{ source('transform','fhvhv_trip_data') }}
-
--- dbt build --select <model.sql> --vars '{'is_test_run: false}'
-{% if var('is_test_run', default=true) %}
-
-  limit 100
-
-{% endif %}

@@ -38,7 +38,7 @@ and passenger_count > 0
 and trip_distance > 0 
 and timestamp_trunc(pickup_datetime, MONTH) = load_dt
 
--- dbt build --select <model.sql> --vars '{'is_test_run: false}'
+-- dbt build --select <model.sql> --vars '{'is_test_run': false}'
 {% if var('is_test_run', default=true) %}
 
   limit 100

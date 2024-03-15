@@ -29,9 +29,3 @@ select
     cast(total_amount as numeric) as total_amount,
     coalesce({{ dbt.safe_cast("payment_type", api.Column.translate_type("integer")) }},0) as payment_type,
 from {{ source('transform','green_trip_data') }}
-
-{% if var('is_test_run', default = true) %}
-
-  limit 100 
-
-{% endif %}
