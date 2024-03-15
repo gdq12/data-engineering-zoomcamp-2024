@@ -47,5 +47,6 @@ models:
 seeds: 
     hw4_taxi_rides_ny:
         taxi_zone_lookup:
-            +column_types:
-                locationid: numeric
+          +schema: ny_taxi_hw4_dbt_transform
+          +column_types:
+            locationid: numeric

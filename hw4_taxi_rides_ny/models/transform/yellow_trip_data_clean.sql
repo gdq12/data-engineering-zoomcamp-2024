@@ -21,7 +21,7 @@ select
     passenger_count,
     trip_distance,
     trip_type,
-    {{ datediff("dropoff_datetime", "pickup_datetime", "second") }} as trip_time,
+    {{ datediff( "pickup_datetime", "dropoff_datetime", "second") }} as trip_time,
     fare_amount,
     extra,
     mta_tax,

@@ -3,7 +3,7 @@
 #}
 
 {% macro get_rate_code_id_description(ratecodeid) -%}
-
+    
     case {{ dbt.safe_cast("ratecodeid", api.Column.translate_type("integer")) }}  
         when 1 then 'Standard rate'
         when 2 then 'JFK'

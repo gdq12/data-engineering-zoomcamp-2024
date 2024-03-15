@@ -10,6 +10,9 @@ select
     access_a_ride_flag, 
     wav_request_flag, 
     wav_match_flag, 
+    sr_flag,
+    3 trip_type,
+    7 payment_type,
     'FHVHV' as service_type,
 
 -- Revenue calculation 
@@ -27,4 +30,4 @@ select
     avg(trip_miles) as avg_monthly_trip_distance,
     avg(trip_time/60) as avg_monthly_trip_time
 from {{ ref('fhvhv_trip_data_clean') }}
-group by 1,2,3,4,5,6,7,8
+group by 1,2,3,4,5,6,7,8,9
