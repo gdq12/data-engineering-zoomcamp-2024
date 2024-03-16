@@ -46,10 +46,9 @@ from tripdata as t1
 -- left join {{ ref('fhv_trip_data') }} as t2 on t1.dispatching_base_num = t2.dispatching_base_num
 --                                             and t1.pickup_locationid = t2.pickup_locationid
 --                                             and t1.dropoff_locationid = t2.dropoff_locationid
--- where t1.rn = 1
+where t1.rn = 1
 -- and t1.pickup_datetime < t1.dropoff_datetime
 -- and t1.trip_miles > 0 
-where {{ dbt.date_trunc("month", "t1.pickup_datetime") }}  <= cast('2019-12-31' as timestamp)
 
 -- dbt build --select <model.sql> --vars '{'is_test_run': false}'
 {% if var('is_test_run', default=true) %}

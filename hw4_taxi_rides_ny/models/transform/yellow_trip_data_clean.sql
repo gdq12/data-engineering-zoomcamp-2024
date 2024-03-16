@@ -33,10 +33,9 @@ select
     payment_type,
 from tripdata
 where rn = 1
-and pickup_datetime < dropoff_datetime
-and passenger_count > 0
-and trip_distance > 0 
-and timestamp_trunc(pickup_datetime, MONTH) = load_dt
+-- and pickup_datetime < dropoff_datetime
+-- and passenger_count > 0
+-- and trip_distance > 0 
 
 -- dbt build --select <model.sql> --vars '{'is_test_run': false}'
 {% if var('is_test_run', default=true) %}
