@@ -71,7 +71,85 @@
 
   * attempted to map `SR_FLAG` from the fhvhv data set but the table is too large to so, so will tackle this at a later date
 
-  * skipped documentation and testing for time efficiency and will add this for the final project 
+  * skipped documentation and testing for time efficiency and will add this for the final project
+
+### Q&A
+
+1. What happens when we execute dbt build --vars '{'is_test_run':'true'}'?
+
+  * answer: `It applies a limit 100 only to our staging models`
+
+  * this answer is based on the following syntax being present only in `models/staging` tables in week4 work
+
+    ```
+    {% if var('is_test_run', default = true) %}
+
+      limit 100
+
+    {% endif %}
+    ```
+
+2. What is the code that our CI job will run? Where is this code coming from?
+
+  * answer: `The code that has been merged into the main branch`
+
+3. What is the count of records in the model fact_fhv_trips after running all dependencies with the test run variable disabled (:false)?
+Create a staging model for the fhv data, similar to the ones made for yellow and green data. Add an additional filter for keeping only records with pickup time in year 2019. Do not add a deduplication step. Run this models without limits (is_test_run: false). Create a core model similar to fact trips, but selecting from stg_fhv_tripdata and joining with dim_zones. Similar to what we've done in fact_trips, keep only records with known pickup and dropoff locations entries for pickup and dropoff locations. Run the dbt model without limits (is_test_run: false).
+
+  * answer: `22998722` (actually got 227115695 but that was the closest of the choices)
+
+  * adjusted `models/transfor/fhvhv_trip_data_clean.sql` as instructed --> ran the following dbt command `dbt run --select fhvhv_trip_data_clean --vars '{'is_test_run': false}'` --> running a custom query so as not to change the aggregation and prod tables for this question (current hw4 dbt model deviates a lot from lesson model)
+
+  * queries in big query to get answer:
+
+    ```{sql}
+    -- verify raw data limited to 2019
+    select
+      max(pickup_datetime)
+    from ny-taxi-412905.ny_taxi_hw4_dbt_transform.fhvhv_trip_data_clean
+    ;
+
+    -- verify zone lookup table correct
+    select *
+    from ny-taxi-412905.ny_taxi_hw4_dbt_transform.taxi_zone_lookup_clean
+    -- where borough is null
+    where borough is not null
+    ;
+
+    -- get row count for Q3
+    select
+      count(*) -- no joins (234,628,179), w/joins (227,115,695)
+    from ny-taxi-412905.ny_taxi_hw4_dbt_transform.fhvhv_trip_data_clean t1
+    inner join ny-taxi-412905.ny_taxi_hw4_dbt_transform.taxi_zone_lookup_clean pz on t1.pickup_locationid = pz.locationid
+    inner join ny-taxi-412905.ny_taxi_hw4_dbt_transform.taxi_zone_lookup_clean dz on t1.dropoff_locationid = dz.locationid
+    ;
+    ```
+
+4. What is the service that had the most rides during the month of July 2019 month with the biggest amount of rides after building a tile for the fact_fhv_trips table and the fact_trips tile as seen in the videos? Create a dashboard with some tiles that you find interesting to explore the data. One tile should show the amount of trips per month, as done in the videos for fact_trips, including the fact_fhv_trips data.
+
+  * answer: `YELLOW` (query actually stated FHV, must be some slight syntax difference between the wk4 code and hw4 code that led to different filtering)
+
+  * adjusted queries in transform and aggregation models to do less filtering --> ran the following dbt commands to recreate the tables: `dbt run --select +fhvhv_monthly_zone_revenue --vars '{'is_test_run': false}'`, `dbt run --select +grn_monthly_zone_revenue --vars '{'is_test_run': false}'`, `dbt run --select +yellow_monthly_zone_revenue --vars '{'is_test_run': false}'`
+
+  * bigquery sql query for calculation (couldnt be bothered with a dashboard on the day of, will take this step for the final project):
+
+    ```{sql}
+    select service_type, sum(total_monthly_trips) num_trips
+    from ny-taxi-412905.ny_taxi_hw4_dbt_aggregation.fhvhv_monthly_zone_revenue
+    where revenue_month = cast('2019-07-01' as timestamp)
+    group by 1
+    union all
+    select service_type, sum(total_monthly_trips) num_trips
+    from ny-taxi-412905.ny_taxi_hw4_dbt_aggregation.grn_monthly_zone_revenue
+    where revenue_month = cast('2019-07-01' as timestamp)
+    group by 1
+    union all
+    select service_type, sum(total_monthly_trips) num_trips
+    from ny-taxi-412905.ny_taxi_hw4_dbt_aggregation.yellow_monthly_zone_revenue
+    where revenue_month = cast('2019-07-01' as timestamp)
+    group by 1
+    ;
+    ```
 
 ### Helpful Links
 
