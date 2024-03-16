@@ -1,0 +1,21 @@
+version: 2
+
+sources:
+  - name: transform
+    database: ny-taxi-412905
+    schema: ny_taxi_hw4_dbt_raw
+
+    tables: 
+      - name: green_trip_data
+      - name: yellow_trip_data
+      - name: fhv_trip_data
+      - name: fhvhv_trip_data
+
+models: 
+  - name: stg_grn_trip_data
+  - name: stg_yellow_trip_data
+  - name: stg_fhvhv_trip_data
+  - name: fhv_trip_data
+  - name: grn_trip_data_clean
+  - name: yellow_trip_data_clean
+  - name: fhvhv_trip_data_clean

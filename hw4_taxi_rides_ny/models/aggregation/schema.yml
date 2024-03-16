@@ -1,0 +1,6 @@
+version: 2
+
+models:
+  - name: grn_monthly_zone_revenue
+  - name: yellow_monthly_zone_revenue
+  - name: fhvhv_monthly_zone_revenue

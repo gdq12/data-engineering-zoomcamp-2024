@@ -1,0 +1,6 @@
+version: 2
+
+models:
+  - name: green_taxi_monthly_revenue
+  - name: yellow_taxi_monthly_revenue
+  - name: fhvhv_taxi_monthly_revenue
