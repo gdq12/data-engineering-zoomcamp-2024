@@ -23,45 +23,45 @@
   spark.range(1000 * 1000 * 1000).count()
   ```
 
-### Working with Pyspark 
+### Working with Pyspark
 
-* chose to go with a docker image pre-made by spark to deal with different PCs architectures and installations. 
+* chose to go with a docker image pre-made by spark to deal with different PCs architectures and installations.
 
-* had to use that as a layer to build a custom image in order to create ouwn user and pip install python libraries 
+* had to use that as a layer to build a custom image in order to create ouwn user and pip install python libraries
 
-* running pyspark in jupyter notebook 
+* running pyspark in jupyter notebook
 
   ```{python}
-  # needed libraries 
+  # needed libraries
   import os
   import pyspark
   from pyspark.sql import SparkSession
 
-  # to check what version have installed 
+  # to check what version have installed
   pyspark.__version__
 
-  # check path of where it was pip installed 
+  # check path of where it was pip installed
   pyspark.__file__
 
-  #download tzxi zone file locally 
+  #download tzxi zone file locally
   os.system('curl -O https://s3.amazonaws.com/nyc-tlc/misc/taxi+_zone_lookup.csv')
 
-  # connect to a spark session 
+  # connect to a spark session
   spark = SparkSession.builder \
       .master("local[4]") \
       .appName('test') \
       .getOrCreate()
 
 
-  # read a csv file into the spark session 
+  # read a csv file into the spark session
   df = spark.read \
       .option("header", "true") \
       .csv('taxi+_zone_lookup.csv')
 
-  # prints out the first 20 rows 
+  # prints out the first 20 rows
   df.show()
 
-  # saves parquet files locally 
+  # saves parquet files locally
   df.write.parquet('zones')
   ```
 
@@ -72,6 +72,43 @@
     + via `localhost:4040` can visit spark UI to see how the clusters are doing. Can add this port to port forwarding when working in VScode
 
     + by default spark doesnt know what the file header is, this can be done by indicating the column row with the following `.option("header", "true")`
+
+### Issues with PC
+
+* currently have issues initiating vs code extensions in dev container on mac intel based chip only, not the case for an m2 chip --> cant use jupyter notebook without the extension in vs code
+
+* blogs to look into to resolve this:
+
+  - https://github.com/microsoft/vscode-remote-release/issues/8967
+
+  - https://code.visualstudio.com/remote/advancedcontainers/change-default-source-mount
+
+* in the meantime, using the same method as described in [week4/4_1a_data_2_gcs](../week4/4_1a_data_2_gcs:
+
+  * enter the docker container: `docker run -it -p 8888:8888 -e ROOT=TRUE wk5-spark`
+
+  * execute the following to create ssh connex btw local PC and docker container
+
+      ```{bash}
+      jupyter-lab --generate-config
+      # will be prompted to create a password
+      jupyter-lab password
+
+      # follwoing will prompt a series of Qs, only need to answer the first and the rest can leave blank
+      openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout mycert.pem -out mycert.pem
+
+      # move needed file for jupyter-lab connection
+      mv /home/ubuntu/jupyter_server_config.py /home/ubuntu/.jupyter
+      ```
+
+  * initiate jupyter-lab from wihtin the container:
+
+      ```{bash}
+      # initiate jupyter-lab in docker
+      jupyter-lab --ip 0.0.0.0 --port 8888 --no-browser --allow-root
+      # opening jupyter lab in the browser
+      http://127.0.0.1:8888/lab
+      ```
 
 ### Helpful Links
 
