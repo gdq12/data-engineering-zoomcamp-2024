@@ -1,4 +1,5 @@
 FROM spark:3.5.1-scala2.12-java11-python3-ubuntu
+# python version 3.8.10 being used 
 
 # for non root users so can pip install
 # based on this post: https://stackoverflow.com/questions/71753536/how-to-deal-with-permission-errors-with-pip-inside-a-docker-compose-container
