@@ -83,7 +83,7 @@
 
   - https://code.visualstudio.com/remote/advancedcontainers/change-default-source-mount
 
-* in the meantime, using the same method as described in [week4/4_1a_data_2_gcs](../week4/4_1a_data_2_gcs:
+* in the meantime, using the same method as described in [week4/4_1a_data_2_gcs](../week4/4_1a_data_2_gcs):
 
   * enter the docker container: `docker run -it -p 8888:8888 -e ROOT=TRUE wk5-spark`
 
