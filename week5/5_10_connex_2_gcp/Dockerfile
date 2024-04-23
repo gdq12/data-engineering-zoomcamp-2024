@@ -33,10 +33,18 @@ RUN wget https://storage.googleapis.com/hadoop-lib/gcs/gcs-connector-hadoop3-lat
 # also done in terminal via
 # gsutil cp gs://hadoop-lib/gcs/gcs-connector-hadoop3-2.2.5.jar /home/ubuntu/lib/gcs-connector-hadoop3-latest.jar
 
+# install spark in directory that have writting access to
+# https://github.com/DataTalksClub/data-engineering-zoomcamp/blob/main/05-batch/setup/linux.md
+RUN wget https://dlcdn.apache.org/spark/spark-3.5.1/spark-3.5.1-bin-hadoop3.tgz && \
+  tar xzfv spark-3.5.1-bin-hadoop3.tgz && \
+  rm spark-3.5.1-bin-hadoop3.tgz
+ENV PATH="${SPARK_HOME}/bin:${PATH}"
+
 # env variables needed to be defined
 ENV HOME=/home/${USERNAME}
 ENV GOOGLE_APPLICATION_CREDENTIALS=$HOME/ny-taxi-412905-ac957361bbc4.json
 ENV HADOOP_COMMON_LIB_JARS_DIR=$HADOOP_CLASSPATH:$HOME/gcs-connector-hadoop3-latest.jar
+ENV SPARK_HOME="${HOME}/spark-3.5.1-bin-hadoop3"
 
 # command to run when container launched
 CMD ["bash"]
