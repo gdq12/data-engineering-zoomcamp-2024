@@ -66,15 +66,18 @@
     * run bash command in docker container to send job
 
       ``` {bash}
+      # set project env var in docker container
+      gcloud config set project projectName
 
+      # cmd for sending job
       gcloud dataproc jobs submit pyspark \
           --cluster=spark-wk5-cluster-v2 \
           --region=europe-west10 \
           gs://spark-wk5-tutorial/scripts/vid12_wk5.py \
           -- \
-          --input_grn=gs://spark-wk5-tutorial/grn_taxi_data/* \
-          --input_yellow=gs://spark-wk5-tutorial/yellow_taxi_data/* \
-          --output_path=gs://spark-wk5-tutorial/vid12_results
+            --input_grn=gs://spark-wk5-tutorial/grn_taxi_data/* \
+            --input_yellow=gs://spark-wk5-tutorial/yellow_taxi_data/* \
+            --output_path=gs://spark-wk5-tutorial/vid12_results
       ```
 
 ### Good to know
