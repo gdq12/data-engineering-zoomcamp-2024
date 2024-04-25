@@ -26,7 +26,7 @@
 
   + good to know: can also see the cluster instance in `VM Instances` page of the dashboard
 
-3) push script from [5_11_create_local_cluster](../5_11_create_local_cluster) into a subfolder of the bucket that will work with
+3) push script from [5_12_create_local_cluster](../5_12_create_local_cluster) into a subfolder of the bucket that will work with
 
   ```
   # login and authenticate gcp creds (follow links and provide authentication codes when prompted)
