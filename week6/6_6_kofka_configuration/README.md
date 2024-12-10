@@ -54,12 +54,38 @@
 
 ### Offsets 
 
-**up to 20:29 in video**
+* this is used to determine which new messages should be provided/consumed by consumers 
 
+* offset is just a sequntial number attached to each message in a topic --> this tells the consumer which messages within the topic it has received --> known as consumer commits messages from kafka cluster
 
+* kafka node network contains an internal topic (__consumer_offset_) which keeps track of how many messages the topic consumer (within consumer group ID) has already commited --> if a consumer from that group ID goes off line, then it knows from where the new topic to pickup from 
+
+* __consumer_offset internal kafka topic always keeps track within its messages <consumer group ID, topic, partition, offset> --> this is what permits a newly spun up consumer to resume right where the last one dropped off 
+
+* auto offset reset --> tells kafka how to react when a new consumer group ID becomes attached to it. a new consumer group ID can continue to receive messages from the latest offset message that was consumed from any consumer group ID or the new consumer group ID can manually indicate that it wants the messages starting at the earliest offset
+
+### Acknowledgement All
+
+* from the producers side 
+
+* it has to do with how log files are updated for a producer 
+
+* different log categories: 
+
+    - acknowledgement 0: "fire and forget" --> producer sends a message to the leader node but doesnt verify if it indeed reach the leader node or not 
+
+    - acknowledgement 1: verify that message has reached the leader node 
+
+    - acknowledgement all: acknowledgement 1 **AND** its been replicated to the follower node 
+
+* when none of the above are met, the producer receives an error message for failure of transmitting message 
+
+* these different types of log conditions help specify at what degree of success/failure messages from the producer reached kafak nodes. This perhaps for more efficient recuperation plans to take effect and enables to priorities recuperation steps depending different consumer needs
 
 ### Helpful Links
 
 * YT [video](https://www.youtube.com/watch?v=SXQtWyRpMKs&list=PL3MmuxUbc_hJed7dXYoJw8DoCuVHhGEQb&index=73)
 
 * lecture [slides](https://docs.google.com/presentation/d/1bCtdCba8v1HxJ_uMm9pwjRUC-NAMeB-6nOG2ng3KujA/edit#slide=id.p1)
+
+* kafka [documentation](https://kafka.apache.org/documentation/) for further reading
