@@ -34,6 +34,8 @@
 
 * YT [video](https://www.youtube.com/watch?v=dUyA_63eRb0&list=PL3MmuxUbc_hJed7dXYoJw8DoCuVHhGEQb&index=73)
 
-* lecture [slides](https://docs.google.com/presentation/d/1bCtdCba8v1HxJ_uMm9pwjRUC-NAMeB-6nOG2ng3KujA/edit#slide=id.p1)
+* lecture [slides](https://docs.google.com/presentation/d/1fVi9sFa7fL2ZW3ynS5MAZm0bRSZ4jO10fymPmrfTUjE/edit#slide=id.g2505704cc3_1_35)
 
 * kafka [documentation](https://kafka.apache.org/documentation/) for further reading
+
+* confluence [documentation](https://docs.confluent.io/platform/current/streams/concepts.html) on kafka streams
