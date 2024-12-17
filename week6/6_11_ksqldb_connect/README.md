@@ -49,7 +49,3 @@
 * kafka [documentation](https://kafka.apache.org/documentation/) for further reading
 
 * confluence [documentation](https://docs.confluent.io/platform/current/streams/concepts.html) on kafka streams
-
-* confluence [documentation](https://www.confluent.io/blog/windowing-in-kafka-streams/) on windowing
-
-* confluence [hands-on](https://developer.confluent.io/courses/kafka-streams/windowing/) coding for windowing
