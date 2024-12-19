@@ -10,6 +10,7 @@
     cd ~/git_repos/data-engineering-zoomcamp/06-streaming
     cp -r python/docker/kafka ~/git_repos/data-engineering-zoomcamp-2024/week6/6_13_streaming_with_python/
     cp -r python/json_example ~/git_repos/data-engineering-zoomcamp-2024/week6/6_13_streaming_with_python/
+    cp -r python/avro_example ~/git_repos/data-engineering-zoomcamp-2024/week6/6_13_streaming_with_python/.
     cp -r java/kafka_examples/src/main/resources/rides.csv ~/git_repos/data-engineering-zoomcamp-2024/week6/6_13_streaming_with_python/json_example/.
     cp python/requirements.txt ~/git_repos/data-engineering-zoomcamp-2024/week6/6_13_streaming_with_python/kafka/.
     ```
@@ -43,15 +44,17 @@
     docker compose up -d
     ```
 
+    + when running `json_example`, uncomment line 11, when running `avro_example` uncomment line 12
+
 5. wait for the images to be pulled from docker image repo and then can see the containers up and running. this can be verified with `docker ps -a`
 
 6. enter the pythin container to make sure all `*.py` files and `rides.csv` have been mounted into it via command `docker exec -it containerID sh`
 
-7. trigger `producer.py` to trigger the pipeline 
+7. execute `python3 producer.py` to trigger the pipeline 
 
 8. after all the `rides.csv` were exported as messages, can then trigger the consumer script via `python3 consumer.py`
 
-**---------------------------------------------------AT MIN 21-------------------------------------------------------**
+9. when all testing/demo is complete can exit python container and bring down pipelinw with `docker compose down`
 
 ### Code overview 
 
@@ -76,6 +79,26 @@
     + `PLAINTEXT` --> `INTERNAL` and `PLAINTEXT_HOST` --> `EXTERNAL` to emphasize the purpose for each of the listeners. Listerners take messages from either inside or outside the docker network
 
     + for internal docker to docker communication, need to find the IP address of `broker`, this is elaborated below
+* python docker added to network 
+
+    + [kafka/python-wk6.Dockerfile](kafka/python-wk6.Dockerfile) and [kafka/requirements.txt][kafka/requirements.txt] where created for this 
+
+    + an updated version of `requirements.txt` was created and commited since a new solution was required for kafka to work with pytho 3.12, [solution3 stackoverflow](https://stackoverflow.com/questions/77287622/modulenotfounderror-no-module-named-kafka-vendor-six-moves-in-dockerized-djan) details this. Getting an updated version of `requirements.txt`. This was done by after python docker container being updated, `pip freeze > requirements.txt` executed in the running container and then it was exported via `docker cp containerID:/home/ubuntu/requirements.txt ~/file/destination/path`
+
+* These scripts were adapted in that python scripts are executed from a python docker container within the same network so as to not have to configure the python global env for the script run. In order to successfully carry this out the kafka internal listener address had to be identified and updated accordingly in `settings.py` for value `BOOTSTRAP_SERVERS`. The broker kafka running docker IP address was obtained by the following docker command:
+
+    ```
+    docker inspect \
+    -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' containerID
+    ```
+
+    + so far it seems that the IP address is always `172.18.0.3`, though should this change the current IP address can be obtained from the command above afer `docker compose up -d` command
+
+    + a pretty good elaboration of this can be found in a [kaaiot article](https://www.kaaiot.com/blog/kafka-docker) and [confluent page](https://www.confluent.io/blog/kafka-listeners-explained/)
+
+    + perhaps to explore in the future to fix IP addresses in a docker network would be this [medium article](https://medium.com/@wandrys.sousa/assign-a-fixed-ip-address-to-a-container-in-docker-compose-2cc6c1a6151e)
+
+### JSON Example Code Review 
 
 * [json_example/producer.py](json_example/producer.py):
 
@@ -107,25 +130,31 @@
 
     + for line 25, this just prints out the messages that the consumer reads back from the stream, but this can be altered to transmit the results to another location (like a csv or to some kind of cloud location like BigQuery)
 
-* python docker added to network 
+### AVRO Example Code Review 
 
-    + [kafka/python-wk6.Dockerfile](kafka/python-wk6.Dockerfile) and [kafka/requirements.txt][kafka/requirements.txt] where created for this 
+* [avro_example/producer.py](avro_example/producer.py):
 
-    + an updated version of `requirements.txt` was created and commited since a new solution was required for kafka to work with pytho 3.12, [solution3 stackoverflow](https://stackoverflow.com/questions/77287622/modulenotfounderror-no-module-named-kafka-vendor-six-moves-in-dockerized-djan) details this. Getting an updated version of `requirements.txt`. This was done by after python docker container being updated, `pip freeze > requirements.txt` executed in the running container and then it was exported via `docker cp containerID:/home/ubuntu/requirements.txt ~/file/destination/path`
+    + instead of creating own producer and consumer classes, using `confluent kafka` library since it is more stable and works better with schema registry 
 
-* These scripts were adapted in that python scripts are executed from a python docker container within the same network so as to not have to configure the python global env for the script run. In order to successfully carry this out the kafka internal listener address had to be identified and updated accordingly in `settings.py` for value `BOOTSTRAP_SERVERS`. The broker kafka running docker IP address was obtained by the following docker command:
+    + the lines of code that read the csv and send the records out as messages do not change, there is just quite a change in the `config` variable 
 
-    ```
-    docker inspect \
-    -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' containerID
-    ```
+    + the principle update in `config` is the schema registry implementation. This is setup mesage flow in a rigid format of specifying strict data types so any non-compliant messages are caught early on in processing 
 
-    + so far it seems that the IP address is always `172.18.0.3`, though should this change the current IP address can be obtained from the command above afer `docker compose up -d` command
+    + `delivery_report()` is a logging mechanism from kafka side that indicates successful delivery of message or not from producer  
 
-    + a pretty good elaboration of this can be found in a [kaaiot article](https://www.kaaiot.com/blog/kafka-docker) and [confluent page](https://www.confluent.io/blog/kafka-listeners-explained/)
+* [avro_example/settings.py](avro_example/settings.py): 
 
-    + perhaps to explore in the future to fix IP addresses in a docker network would be this [medium article](https://medium.com/@wandrys.sousa/assign-a-fixed-ip-address-to-a-container-in-docker-compose-2cc6c1a6151e)
+    + pretty similiar to the json_example one, except there are more variables to import configurations for schema registry into `producer.py`
 
+* [avro_example/schemas](avro_example/schemas):
+
+    + `taxi_ride_key.avsc` and `taxi_ride_key.avsc` define the specifics for the schema to be added to the schema registry. It define the key and values AND the data types they must be for the producer to successfully pass messages onto the consumer
+
+* [avro_example/ride_record_key.py](avro_example/ride_record_key.py) and [avro_example/ride_record.py](avro_example/ride_record.py):
+
+    + they serialize the data for the messages. they are called upon in `producer.py`
+
+    + another advantage here is that csv records dont have to be converted to `utf-8` since the serializers already convert the data to binary format 
 
 ### Helpful Links 
 
