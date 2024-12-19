@@ -4,6 +4,13 @@ from typing import List, Dict
 from kafka import KafkaProducer
 from kafka.errors import KafkaTimeoutError
 
+# to help with python 3.12 error 
+# https://stackoverflow.com/questions/77287622/modulenotfounderror-no-module-named-kafka-vendor-six-moves-in-dockerized-djan
+import six
+import sys
+if sys.version_info >= (3, 12, 0):
+    sys.modules['kafka.vendor.six.moves'] = six.moves
+
 from ride import Ride
 from settings import BOOTSTRAP_SERVERS, INPUT_DATA_PATH, KAFKA_TOPIC
 
