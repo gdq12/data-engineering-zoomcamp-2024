@@ -167,3 +167,11 @@
 * setup for running kafka and spark cluster on [docker](https://github.com/DataTalksClub/data-engineering-zoomcamp/blob/main/06-streaming/python/docker/README.md)
 
 * background on [kafka listeners](https://www.confluent.io/blog/kafka-listeners-explained/)
+
+* another example of how kafka can be used to push data onto an sql server and use maetbase to analyze the data, in this [medium article](https://medium.com/analytics-vidhya/making-sense-of-stream-data-b74c1252a8f5)
+
+* coding kafka streams [api](https://kafka.apache.org/documentation/streams/)
+
+* another streaming tool/library, [faust](https://faust.readthedocs.io/en/latest/index.html)
+
+* comparison of [kafka vs faust](https://faust.readthedocs.io/en/latest/playbooks/vskafka.html)
