@@ -48,4 +48,6 @@
 
 * kafka [documentation](https://kafka.apache.org/documentation/) for further reading
 
-* confluence [documentation](https://docs.confluent.io/platform/current/streams/concepts.html) on kafka streams
+* confluent [documentation](https://docs.confluent.io/platform/current/streams/concepts.html) on kafka streams
+
+* confluent [theoretical documentation](https://www.confluent.io/blog/ksql-streaming-sql-for-apache-kafka/) on ksqldb
