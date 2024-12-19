@@ -49,6 +49,8 @@
 
 7. trigger `producer.py` to trigger the pipeline 
 
+8. after all the `rides.csv` were exported as messages, can then trigger the consumer script via `python3 consumer.py`
+
 **---------------------------------------------------AT MIN 21-------------------------------------------------------**
 
 ### Code overview 
@@ -70,6 +72,10 @@
         KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://broker:29092,PLAINTEXT_HOST://localhost:9092
         KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
         ```
+
+    + `PLAINTEXT` --> `INTERNAL` and `PLAINTEXT_HOST` --> `EXTERNAL` to emphasize the purpose for each of the listeners. Listerners take messages from either inside or outside the docker network
+
+    + for internal docker to docker communication, need to find the IP address of `broker`, this is elaborated below
 
 * [json_example/producer.py](json_example/producer.py):
 
@@ -101,18 +107,24 @@
 
     + for line 25, this just prints out the messages that the consumer reads back from the stream, but this can be altered to transmit the results to another location (like a csv or to some kind of cloud location like BigQuery)
 
-    * These scripts were adapted in that python scripts are executed from a python docker container within the same network so as to not have to configure the python global env for the script run. In order to successfully carry this out the kafka internal listener address had to be identified and updated accordingly in `settings.py` for value `BOOTSTRAP_SERVERS`. The broker kafka running docker IP address was obtained by the following docker command:
+* python docker added to network 
 
-        ```
-        docker inspect \
-        -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' containerID
-        ```
+    + [kafka/python-wk6.Dockerfile](kafka/python-wk6.Dockerfile) and [kafka/requirements.txt][kafka/requirements.txt] where created for this 
 
-        + so far it seems that the IP address is always `172.18.0.3`, though should this change the current IP address can be obtained from the command above afer `docker compose up -d` command
+    + an updated version of `requirements.txt` was created and commited since a new solution was required for kafka to work with pytho 3.12, [solution3 stackoverflow](https://stackoverflow.com/questions/77287622/modulenotfounderror-no-module-named-kafka-vendor-six-moves-in-dockerized-djan) details this. Getting an updated version of `requirements.txt`. This was done by after python docker container being updated, `pip freeze > requirements.txt` executed in the running container and then it was exported via `docker cp containerID:/home/ubuntu/requirements.txt ~/file/destination/path`
 
-        + a pretty good elaboration of this can be found in a [kaaiot article](https://www.kaaiot.com/blog/kafka-docker) and [confluent page](https://www.confluent.io/blog/kafka-listeners-explained/)
+* These scripts were adapted in that python scripts are executed from a python docker container within the same network so as to not have to configure the python global env for the script run. In order to successfully carry this out the kafka internal listener address had to be identified and updated accordingly in `settings.py` for value `BOOTSTRAP_SERVERS`. The broker kafka running docker IP address was obtained by the following docker command:
 
-        + perhaps to explore in the future to fix IP addresses in a docker network would be this [medium article](https://medium.com/@wandrys.sousa/assign-a-fixed-ip-address-to-a-container-in-docker-compose-2cc6c1a6151e)
+    ```
+    docker inspect \
+    -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' containerID
+    ```
+
+    + so far it seems that the IP address is always `172.18.0.3`, though should this change the current IP address can be obtained from the command above afer `docker compose up -d` command
+
+    + a pretty good elaboration of this can be found in a [kaaiot article](https://www.kaaiot.com/blog/kafka-docker) and [confluent page](https://www.confluent.io/blog/kafka-listeners-explained/)
+
+    + perhaps to explore in the future to fix IP addresses in a docker network would be this [medium article](https://medium.com/@wandrys.sousa/assign-a-fixed-ip-address-to-a-container-in-docker-compose-2cc6c1a6151e)
 
 
 ### Helpful Links 
