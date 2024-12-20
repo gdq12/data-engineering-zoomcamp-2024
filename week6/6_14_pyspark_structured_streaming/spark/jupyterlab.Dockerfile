@@ -1,16 +1,15 @@
-FROM cluster-base
+FROM python:3.12
 
-# -- Layer: JupyterLab
-
-ARG spark_version=3.3.1
-ARG jupyterlab_version=3.6.1
-
-RUN apt-get update -y && \
-    apt-get install -y python3-pip && \
-    pip3 install wget pyspark==${spark_version} jupyterlab==${jupyterlab_version}
-
-# -- Runtime
-
+WORKDIR /home/ubuntu
 EXPOSE 8888
-WORKDIR ${SHARED_WORKSPACE}
+
+# make sure working with the latest ubuntu configs
+RUN apt-get update && \
+    apt-get clean
+
+# copy needed files needed for creating python container 
+COPY requirements.txt /home/ubuntu
+RUN pip install -r requirements.txt 
+
+# command to run when container is up and running 
 CMD jupyter lab --ip=0.0.0.0 --port=8888 --no-browser --allow-root --NotebookApp.token=
