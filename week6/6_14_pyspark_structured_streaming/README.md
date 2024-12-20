@@ -10,10 +10,6 @@
     cp -r ~/git_repos/data-engineering-zoomcamp-2024/week6/6_13_streaming_with_python/kafka/ ~/git_repos/data-engineering-zoomcamp-2024/week6/6_14_pyspark_structured_streaming/kafka/.
     cp -r python/docker/spark ~/git_repos/data-engineering-zoomcamp-2024/week6/6_14_pyspark_structured_streaming/
     cp -r python/streams-example/pyspark ~/git_repos/data-engineering-zoomcamp-2024/week6/6_14_pyspark_structured_streaming/pyspark
-    # cp -r python/json_example ~/git_repos/data-engineering-zoomcamp-2024/week6/6_14_pyspark_structured_streaming/
-    # cp -r python/avro_example ~/git_repos/data-engineering-zoomcamp-2024/week6/6_14_pyspark_structured_streaming/.
-    # cp -r java/kafka_examples/src/main/resources/rides.csv ~/git_repos/data-engineering-zoomcamp-2024/week6/6_14_pyspark_structured_streaming/json_example/.
-    # cp python/requirements.txt ~/git_repos/data-engineering-zoomcamp-2024/week6/6_14_pyspark_structured_streaming/kafka/.
     ```
 
 2. build spark images 
@@ -74,7 +70,7 @@
 
     + needed to update `BOOTSTRAP_SERVICES` for the correct broker IP. This was done with command `docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' containerID`
 
-10. go through the jupyter notebook via `lcoalhost:8888`
+10. go through the jupyter notebook via `localhost:8888`
 
 11. go through and review jupyter notebook `streaming-notebook.ipynb`
 
