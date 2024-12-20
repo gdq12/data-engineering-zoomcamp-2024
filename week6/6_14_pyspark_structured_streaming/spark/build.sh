@@ -2,7 +2,7 @@
 
 SPARK_VERSION="3.5.3"
 HADOOP_VERSION="3"
-# JUPYTERLAB_VERSION="3.6.1"
+JUPYTERLAB_VERSION="3.6.1"
 
 # -- Building the Images
 
@@ -26,5 +26,6 @@ docker build \
 
 docker build \
   --build-arg spark_version="${SPARK_VERSION}" \
+  --build-arg jupyterlab_version="${JUPYTERLAB_VERSION}" \
   -f jupyterlab.Dockerfile \
   -t jupyterlab .
