@@ -52,33 +52,36 @@
     docker volume create --name=hadoop-distributed-file-system
     ```
 
-6. go into the kafka and spark folders to spin up the docker containers 
+6. spin up all the containers via docker compose up
 
     ```
     # go to directory where docker-compose.yml is 
-    cd kafka
-    # run all the containers in detached mode 
-    docker compose up -d
-
-    # go to directory where docker-compose.yml is 
-    cd spark
-    # run all the containers in detached mode 
+    cd 6_14_pyspark_structured_streaming
     docker compose up -d
     ```
-
-5. wait for the images to be pulled from docker image repo and then can see the containers up and running. this can be verified with `docker ps -a`
-
-6. enter the pythin container to make sure all `*.py` files and `rides.csv` have been mounted into it via command `docker exec -it containerID sh`
-
-7. execute `python3 producer.py` to trigger the pipeline 
-
-8. after all the `rides.csv` were exported as messages, can then trigger the consumer script via `python3 consumer.py`
 
 **------------------------up to min 6 in video--------------------------------------------------------------------**
 
 
+7. wait for the images to be pulled from docker image repo and then can see the containers up and running. this can be verified with `docker ps -a`
+
+8. enter the python container to make sure all `*.py` files and `rides.csv` have been mounted into it via command `docker exec -it containerID sh`
+
+9. execute the `producer.py` and `consumer.py` scripts within the python container to trigger the pipeline mechanism for the spark contianers 
+
+    ```
+    python3 producer.py
+
+    python3 consumer.py
+    ```
+
 ### Code overview 
 
+* require to create `docker volume` for spark containers, HDFS to store log files of sprak processes 
+
+* [spark sub directory](spark)
+
+    + faced issues with building the [spark/jupyterlab.Dockerfile](spark/jupyterlab.Dockerfile) when pip installing pyspark and jupyterlab libraries. Hypothesize because there is an issue installing python in a `eclipse-temurin` docker hub image from `cluster-base.Dockerfile`. Thus far this has been resolved by updating `jupyterlab.Dockerfile` to use `python:3.12` docker hub image instead and then installing needed libraries using `requirements.txt` from the same subdirectory 
 
 ### Helpful Links 
 
