@@ -29,35 +29,191 @@
 
 3. connecting to the kafka server 
 
-    ```
-    # open the jupyterlab from the python-hw6 container
-    localhost:8888
+    - terminal:
 
-    # pip install lib in the container 
-    pip install kafka-python-ng
-    ```
-    - execute line 2-17 from `spark-streaming-hw6.py` in a jupyter notebook
+        ```
+        # open the jupyterlab from the python-hw6 container
+        localhost:8888
+
+        # pip install lib in the container 
+        pip install kafka-python-ng
+        ```
+    
+    - pyhton/jupyter notebook:
+
+        ```
+        import json
+        import time 
+
+        from kafka import KafkaProducer
+
+        def json_serializer(data):
+            return json.dumps(data).encode('utf-8')
+
+        server = '172.19.0.2:29092'
+
+        producer = KafkaProducer(
+            bootstrap_servers=[server],
+            value_serializer=json_serializer
+        )
+
+        producer.bootstrap_connected()
+        ```
 
     - answer: `True`
 
 4. Sending data to the stream 
 
-    - execute lines 20-33 from `spark-streaming-hw6.py` in a jupyter notebook
+    - python/jupyter notebook lines:
+
+        ```
+        t0 = time.time()
+
+        topic_name = 'test-topic'
+
+        for i in range(10):
+            message = {'number': i}
+            producer.send(topic_name, value=message)
+            print(f"Sent: {message}")
+            time.sleep(0.05)
+
+        producer.flush()
+
+        t1 = time.time()
+        print(f'took {(t1 - t0):.2f} seconds')
+        ```
 
     - answer: `0.75 seconds`
 
-    - to see the messages sent to topic create in Q2, in the `redpandas-1` container execute `rpk topic consume test-topic`
-
+    - to see the messages sent to topic create in Q2, in the `redpandas-1` container execute `rpk topic consume test-topic`. 
     
+    - To see the constant new messages the consumer reads, re-execute the last python lines mentioned here in the python container several times and see the redpandas-1 terminal being constantly updated
+
+    - iterating through the taxi data
+
+        + downloaded the parquet from the official website as opposed to the csv from datatalk module page
+
+        + had to adapt the iteration of a spark DF by using the `collect()` function 
+
+        + python code used in the end 
+
+            ```
+            # import grn taxi data 
+            import os 
+            from pyspark.sql import SparkSession
+
+            spark = SparkSession.builder \
+            .master("local[*]") \
+            .appName('test') \
+            .getOrCreate()
+
+            os.system('curl -O https://d37ci6vzurychx.cloudfront.net/trip-data/green_tripdata_2019-10.parquet')
+
+            df = spark.read.parquet('green_tripdata_2019-10.parquet')
+
+            # iterating through the taxi data 
+            def spark_serializer(x):
+                VendorID=x.VendorID
+                lpep_pickup_datetime=x.lpep_pickup_datetime
+                lpep_dropoff_datetime=x.lpep_dropoff_datetime
+                PULocationID=x.PULocationID
+                DOLocationID=x.DOLocationID
+                passenger_count=x.passenger_count
+                trip_distance=x.trip_distance
+                tip_amount=x.tip_amount
+                return (VendorID, lpep_pickup_datetime, lpep_dropoff_datetime, PULocationID, DOLocationID, passenger_count, trip_distance, tip_amount)
+
+            for row in df.collect():
+                print(spark_serializer(row))
+                break
+                
+            # close the spark session 
+            spark.stop()
+            ```
+
+5. Sending the trip data 
+
+    - create topic in `redpanda-1` via command `rpk topic create green-trips`   
+
+    -  execute script `producer.py`, it took `914.61 seconds`
+
+    - create a pyspark consume python lines:
+
+        ```
+        from time import sleep
+        import pyspark
+        from pyspark.sql import SparkSession
+
+        pyspark_version = pyspark.__version__
+        kafka_jar_package = f"org.apache.spark:spark-sql-kafka-0-10_2.12:{pyspark_version}"
+
+        spark = SparkSession \
+            .builder \
+            .master("local[*]") \
+            .appName("GreenTripsConsumer") \
+            .config("spark.jars.packages", kafka_jar_package) \
+            .getOrCreate()
+
+        # connect to stream 
+        server = '172.19.0.3:29092' # update this based on: docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' containerID
+
+        green_stream = spark \
+            .readStream \
+            .format("kafka") \
+            .option("kafka.bootstrap.servers", server) \
+            .option("subscribe", "green-trips") \
+            .option("startingOffsets", "earliest") \
+            .load()
+
+        # check to see if a record can be picked up by the live stream
+        def peek(mini_batch, batch_id):
+            first_row = mini_batch.take(1)
+
+            if first_row:
+                print(first_row[0])
+
+        query = green_stream.writeStream.foreachBatch(peek).start()
+
+        # execute to stop printing out messages 
+        query.stop()
+
+        spark.stop()
+        ```
+
+        + one of the outputs for the last code above: `Row(key=bytearray(b'{"key": "2"}'), value=bytearray(b'{"lpep_pickup_datetime": "2019-10-03 08:25:23", "lpep_dropoff_datetime": "2019-10-03 08:50:25", "PULocationID": "16", "DOLocationID": "138", "passenger_count": "1.0", "trip_distance": "6.07", "total_amount": "21.8"}'), topic='green-trips', partition=0, offset=2128671, timestamp=datetime.datetime(2024, 12, 21, 20, 44, 27, 128000), timestampType=0)`
+
+6. Parsing the data 
+
+    - python code executed in jupyter notebook 
+
+        ```
+        # define the anticipated data type conversion that can occur 
+        from pyspark.sql import types
+
+        schema = types.StructType() \
+            .add("lpep_pickup_datetime", types.StringType()) \
+            .add("lpep_dropoff_datetime", types.StringType()) \
+            .add("PULocationID", types.IntegerType()) \
+            .add("DOLocationID", types.IntegerType()) \
+            .add("passenger_count", types.DoubleType()) \
+            .add("trip_distance", types.DoubleType()) \
+            .add("tip_amount", types.DoubleType())
+
+        # inspecting what a message looks like 
+        from pyspark.sql import functions as F
+
+        green_stream = green_stream \
+        .select(F.from_json(F.col("value").cast('STRING'), schema).alias("data")) \
+        .select("data.*")
+        ```
+    - the last line outputs: `DataFrame[lpep_pickup_datetime: string, lpep_dropoff_datetime: string, PULocationID: int, DOLocationID: int, passenger_count: double, trip_distance: double, tip_amount: double]`
+
+7. 
 
 
 ### Steps to run code 
 
-1. copy dockerfile from week6 repo 
-
-    ```
-    cp ~/git_repos/data-engineering-zoomcamp/06-streaming/python/redpanda_example/docker-compose.yaml ~/git_repos/data-engineering-zoomcamp-2024/homeworks/hw6/.
-    ```
+1. `docker-compose.yaml` is based on the [redpanda example](https://github.com/DataTalksClub/data-engineering-zoomcamp/blob/main/06-streaming/python/redpanda_example/docker-compose.yaml)
 
 2. build python image via command `docker build -f python-hw6.Dockerfile -t python-hw6 .` in this folder 
 
@@ -68,3 +224,8 @@
 ### Helpful Links 
 
 * [README.md](https://github.com/DataTalksClub/data-engineering-zoomcamp/blob/main/cohorts/2024/06-streaming/homework.md) page of questions 
+
+* brief overview of redpanda streaming provided by [Data Talks Club](https://github.com/DataTalksClub/data-engineering-zoomcamp/tree/main/06-streaming/python/redpanda_example)
+
+* [getting started redpanda blog post](https://www.redpanda.com/blog/get-started-rpk-manage-streaming-data-clusters) CLI centric 
+
