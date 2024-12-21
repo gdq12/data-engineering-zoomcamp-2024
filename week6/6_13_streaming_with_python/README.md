@@ -118,6 +118,10 @@
 
     + it just parses each of the messages provided by the producer script and formats it accordingly 
 
+        - it expects to be recieving the object as an array and parses it accordingly 
+
+        - it also has a dictionary method, where it expects a dictionary and converts it to an array 
+
     + `__repr__` function is executed to print out the messages that are being parsed out by `Ride`. This is a way of QAing and debugging
 
 * [json_example/consumer.py](json_example/consumer.py):
